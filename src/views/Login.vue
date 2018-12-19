@@ -1,22 +1,25 @@
 <template>
 <div>
-  <FormSchema v-model="formData" ref="formSchema" @submit="submit">
-    <button type="submit">Login</button>
-  </FormSchema>
+  username
+  <input type="input" name="username" v-model="credentials.username" />
+  pass
+  <input type="password" name="username" v-model="credentials.password" />
+
+  <button v-on:click="submit">submit</button>
 </div>
 </template>
 
 <script>
-import axios from 'axios'
-import { LOGIN_URL } from '@/services/auth'
 import { mapState, mapActions } from 'vuex'
-import FormSchema from '@formschema/native'
 
 export default {
     data() {
         return {
             errors: null,
-            formData: {},
+            credentials: {
+                username: null,
+                password: null
+            },
       }
     },
     computed: {
@@ -24,19 +27,9 @@ export default {
     },
     methods: {
         ...mapActions('account', ['login', 'logout']),
-        submit(e) {
-            e.preventDefault();
-            this.login(this.formData)
+        submit() {
+            this.login(this.credentials)
         }
     },
-    created: function() {
-        axios.get(LOGIN_URL)
-            .then((response) => {
-                this.errors = this.$refs.formSchema.load(response.data);
-            }).catch((err) => {
-                console.log(err)
-            })
-    },
-    components: { FormSchema }
 }
 </script>

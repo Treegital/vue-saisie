@@ -4,17 +4,18 @@ import router from '@/router';
 
 const token = localStorage.getItem('token');
 const state = token
-    ? { status: { loggedIn: true }, token }
-    : { status: {}, token: null };
+      ? { status: { logged_in: true, token: token } }
+      : { status: {} };
 
 
 const actions = {
     login({ dispatch, commit }, creds) {
-        commit('loginRequest', creds.username);
+        commit('loginRequest');
         auth_service.login(creds)
             .then(
-                token => {
-                    commit('loginSuccess', token);
+                auth => {
+                    commit('loginSuccess', auth.token);
+                    commit('assignationSuccessful', auth.current);
                     router.push('/');
                 },
                 error => {
@@ -30,21 +31,17 @@ const actions = {
 };
 
 const mutations = {
-    loginRequest(state, user) {
-        state.status = { loggingIn: true };
-        state.user = user;
+    loginRequest(state) {
+        state.status = { logging_in: true };
     },
-    loginSuccess(state, user) {
-        state.status = { loggedIn: true };
-        state.user = user;
+    loginSuccess(state, token) {
+        state.status = { logged_in: true, token: token };
     },
     loginFailure(state) {
         state.status = {};
-        state.user = null;
     },
     logout(state) {
         state.status = {};
-        state.user = null;
     }
 };
 
