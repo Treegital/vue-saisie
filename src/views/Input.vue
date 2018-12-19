@@ -2,7 +2,8 @@
 <div>
   <table class="table table-striped table-bordered" v-if="docs.length > 0">
     <tr>
-      <th></th>
+      <th>Document</th>
+      <th>Identifiant</th>
       <th>Page de début</th>
       <th>Qualité</th>
       <th>Gommette</th>
@@ -10,7 +11,10 @@
     </tr>
     <tr v-for="(doc, idx) in docs" :key="idx">
       <td>
-        {{idx}}
+        {{idx + 1}}
+      </td>
+      <td>
+        <input type="text" v-model="docs[idx].identifier" />
       </td>
       <td>
         <input type="number" v-model="docs[idx].page" />
@@ -19,7 +23,11 @@
         <input type="number" v-model="docs[idx].quality" />
       </td>
       <td>
-        <input type="checkbox" v-model="docs[idx].marked" />
+        <select v-model="docs[idx].mark">
+          <option value="S">Supprimer</option>
+          <option value="D">Doublon</option>
+          <option value="G">Gommette</option>
+        </select>
       </td>
       <td>
         <button @click="remove(idx)">X</button>
@@ -61,9 +69,10 @@ export default {
         add() {
             this.sort();
             this.docs.push({
+                identifier: "",
                 page: this.lastpage + 1,
                 quality: 0,
-                marked: false
+                mark: ""
             })
         }
     },
