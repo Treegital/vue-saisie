@@ -1,7 +1,6 @@
 <template>
-<div id="app">
-  <h1>Saisie</h1>
-  <h2 v-if="status.logged_in">
+<section id="app" class="section">
+  <h2 v-if="status.logged_in" class="subtitle">
     <span v-if="current_item.filename">
       Fichier actuellement assigné: {{current_item.filename}}
     </span>
@@ -9,31 +8,37 @@
       Pas de fichier assigné.
     </span>
   </h2>
-  <nav class="navbar navbar-default">
-    <div class="container">
-      <ul class="nav navbar-nav">
-        <li v-if="!status.logged_in">
-          <router-link to="/login">Login</router-link>
-        </li>
-        <li v-if="status.logged_in && !current_item.filename">
-          <router-link to="/assign">Assign</router-link>
-        </li>
-        <li v-if="status.logged_in && current_item.filename">
-          <router-link to="/deassign">Deassign</router-link>
-        </li>
-        <li v-if="status.logged_in && current_item.filename">
-          <router-link to="/input">Input</router-link>
-        </li>
-        <li v-if="status.logged_in" @click="logout()">
-          <router-link to="/login">Logout</router-link>
-        </li>
-      </ul>
+  <nav class="navbar is-dark" role="navigation" aria-label="main navigation">
+    <div id="saisie-nav" class="navbar-menu">
+      <div class="navbar-start">
+        <router-link to="/assign" class="navbar-item"
+                     v-if="status.logged_in && !current_item.filename"
+                     >Assign</router-link>
+        
+        <router-link to="/deassign" class="navbar-item"
+                     v-if="status.logged_in && current_item.filename"
+                     >Deassign</router-link>
+        
+        <router-link to="/input" class="navbar-item"
+                     v-if="status.logged_in && current_item.filename"
+                     >Input</router-link>
+      </div>
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <router-link
+            to="/login" v-if="!status.logged_in"
+            class="button is-primary">Login</router-link>
+          <a @click="logout()"
+             v-if="status.logged_in"
+             class="button is-primary">Logout</a>
+        </div>
+      </div>
     </div>
   </nav>
-  <div class="container">
+  <div class="section">
     <router-view></router-view>
   </div>
-</div>
+</section>
 </template>
 
 <script>

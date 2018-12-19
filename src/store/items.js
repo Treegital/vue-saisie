@@ -22,7 +22,6 @@ const actions = {
             );
     },
     deassign({ dispatch, commit }) {
-        console.log('deassign !')
         items_service.deassign()
             .then(
                 () => {

@@ -17,7 +17,6 @@ function available() {
         });
 }
 
-
 function assign(item) {
 
     const URL = API_URL + 'items/assign'
@@ -60,10 +59,28 @@ function deassign() {
         });
 }
 
+function about(filename) {
+
+    var URL = API_URL + 'items/about/' + filename
+    var token = localStorage.getItem('token');
+
+    return fetch(URL, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        }
+    }).then(handleResponse)
+        .then(data => {
+            return data;
+        });
+}
+
 export const items_service = {
     available,
     assign,
-    deassign
+    deassign,
+    about
 };
 
 export default items_service
